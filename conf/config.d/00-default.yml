@@ -1,7 +1,13 @@
-#Preserve "white" spaces on empty lines.
 default: &default
     configCache: false
     tmpdir: "{API_PROJECT_DIR}tmp/"
+
+#    autoload: myautoload.php
+
+#    serviceContainer:
+#        loader: sfServiceContainerLoaderFileYaml
+#        file: sfServiceContainer.yml
+#        class: myServiceContainer
     
     hosts:
         example.org:
