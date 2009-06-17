@@ -65,7 +65,7 @@ services:
     class:    api_views_json 
     arguments: [@route, @request, @response]
     shared:   false
-  XXX:
-    class:    api_command_XXX
-    arguments: [@route, @request, @response, @config, @db, @pam]
+  default:
+    class:    api_command_default
+    arguments: [@route, @request, @response, @config]
     shared:   true
