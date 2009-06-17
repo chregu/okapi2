@@ -9,13 +9,22 @@ $ctrl = $sc->controller;
 $route = $sc->routing->getRoute($sc->request);
 $sc->setService('route', $route);
 
+
+
 // get command
 $command = $ctrl->findCommandName($route);
-$command = $sc->$command;
-
+try {
+    $command = $sc->$command;
+} catch (InvalidArgumentException $e) {
+    $command = new $command($sc->route, $sc->request, $sc->response, $sc->config);
+}
 // handle view
 if ($viewName = $ctrl->process($command)) {
-    $view = $sc->$viewName;
+    try {
+        $view = $sc->$viewName;
+    } catch  (InvalidArgumentException $e) {
+        $view = new $viewName($sc->route, $sc->request, $sc->response, $sc->config);
+    }
     $view->prepare();
     $data = $command->getData();
     $view->dispatch($data, $ctrl->getExceptions());
