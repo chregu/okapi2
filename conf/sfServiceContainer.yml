@@ -1,0 +1,71 @@
+services:
+  routingcontainer:
+    class:    api_routingcontainer
+    arguments: [@routing]
+    shared:   false
+  routing:
+    class:    api_routing
+    shared:   true
+  request:
+    class:    api_request
+    arguments: [@config]
+    shared:   true
+  response:
+    class:    api_response
+    shared:   true
+  config:
+    class:    api_config
+    shared:   true
+  log:
+    class:    api_log
+    arguments: [@config]
+    shared:   true
+  db:
+    class:    XXX
+    arguments:
+      dsn:
+        host: localhost
+        username: root
+        password:
+        dbname: XXX
+    shared:   true
+  auth:
+    class:    api_pam_auth_XXX
+    arguments:
+        opts:
+          class: XXX
+        config: @config
+        request: @request
+        db: @db
+    shared:   true
+  perm:
+    class:    api_pam_perm_XXX
+    arguments:
+        opts:
+          class: crud
+        config: @config
+        response: @response
+    shared:   true
+  pam:
+    class:    api_pam
+    arguments: [@config, @auth, @perm]
+    shared:   true
+  controller:
+    class:    api_controller
+    arguments: [@request, @response, @routing, @config]
+    shared:   true
+  route:
+    class:    api_routing_route
+    shared:   true
+  html:
+    class:    api_views_html
+    arguments: [@route, @request, @response]
+    shared:   false
+  json:
+    class:    api_views_json 
+    arguments: [@route, @request, @response]
+    shared:   false
+  XXX:
+    class:    api_command_XXX
+    arguments: [@route, @request, @response, @config, @db, @pam]
+    shared:   true
