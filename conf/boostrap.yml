@@ -16,9 +16,6 @@ default: &default
 production:
     <<: *default
 
-# following use an emulated domino environment
-demo: &demo
-    <<: *default
-
 local: &local
     <<: *default
+    configCache: false
