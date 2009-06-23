@@ -2,30 +2,36 @@
 
 require_once dirname(__FILE__) . '/../inc/api/init.php';
 $sc = api_init::start();
-
+$sc->log;
 // get route
 $sc->routingcontainer;
 $ctrl = $sc->controller;
-$route = $sc->routing->getRoute($sc->request);
-$sc->setService('route', $route);
+
+$ctrl->setScLookup(new ServicesLookup($sc));
+
+$ctrl->run()->send();
 
 
+class ServicesLookup {
 
-// get command
-$command = $ctrl->findCommandName($route);
-try {
-    $command = $sc->$command;
-} catch (InvalidArgumentException $e) {
-    $command = new $command($sc->route, $sc->request, $sc->response, $sc->config);
-}
-// handle view
-if ($viewName = $ctrl->process($command)) {
-    try {
-        $view = $sc->$viewName;
-    } catch  (InvalidArgumentException $e) {
-        $view = new $viewName($sc->route, $sc->request, $sc->response, $sc->config);
+    function __construct($sc) {
+        $this->sc = $sc;
     }
-    $view->prepare();
-    $data = $command->getData();
-    $view->dispatch($data, $ctrl->getExceptions());
+
+    function getCommand($command) {
+        return $this->sc->$command;
+}
+
+    function getView($viewName) {
+    try {
+            $view = $this->sc->$viewName;
+    } catch  (InvalidArgumentException $e) {
+            $view = new $viewName($this->sc->route, $this->sc->request, $this->sc->response, $this->sc->config);
+        }
+        return $view;
+    }
+
+    function setRoute($route) {
+        $this->sc->setService('route', $route);
+    }
 }

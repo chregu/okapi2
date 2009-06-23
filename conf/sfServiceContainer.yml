@@ -56,7 +56,7 @@ services:
     shared:   true
   controller:
     class:    api_controller
-    arguments: [@request, @response, @routing, @config]
+    arguments: [@request, @routing, @config]
     shared:   true
   route:
     class:    api_routing_route
