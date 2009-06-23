@@ -20,6 +20,10 @@ services:
     class:    api_log
     arguments: [@config]
     shared:   true
+  i18n:
+    class:    api_i18n_dispatcher
+    arguments: [@config]
+    shared:   true
   db:
     class:    XXX
     arguments:
@@ -67,7 +71,7 @@ services:
     shared:   false
   api_views_default:
     class:    api_views_default
-    arguments: [@route, @request, @response]
+    arguments: [@route, @request, @response, @config, @i18n]
     shared:   true
   api_command_default:
     class:    api_command_default
