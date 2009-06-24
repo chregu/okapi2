@@ -13,6 +13,10 @@ services:
   response:
     class:    api_response
     shared:   true
+  response_exception:
+    class:    api_response_exception
+    arguments: [@api_views_default]
+    shared:   true
   config:
     class:    api_config
     shared:   true
@@ -77,3 +81,9 @@ services:
     class:    api_command_default
     arguments: [@route, @request, @response, @config]
     shared:   true
+  api_filter_hellocheck:
+    class: api_filter_hellocheck
+  api_filter_replace:
+    class: api_filter_replace
+  api_filter_tidy:
+    class: api_filter_tidy    

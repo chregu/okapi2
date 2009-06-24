@@ -25,3 +25,10 @@ default: &default
         default:
             driver: mdb2
             dsn: mysql://dbuser@localhost/example
+    filters:
+       request:
+            api_filter_hellocheck: ~
+            controller: ~
+       response:
+            api_filter_replace: ~
+            api_filter_tidy: ~
