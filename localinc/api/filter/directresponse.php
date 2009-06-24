@@ -2,9 +2,8 @@
 
 class api_filter_directresponse {
 
-    public function __construct($response) {
+    public function __construct($response,$route) {
         $this->response = $response;
-
     }
 
     public function request(sfEvent $event) {

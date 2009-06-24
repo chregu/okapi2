@@ -93,4 +93,4 @@ services:
     class: api_filter_tidy    
   api_filter_directresponse:
     class: api_filter_directresponse
-    arguments: [@response_withview]
+    arguments: [@response_withview,@route]
