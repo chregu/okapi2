@@ -17,6 +17,10 @@ services:
     class:    api_response_exception
     arguments: [@api_views_default]
     shared:   true
+  response_withview:
+    class:    api_response_withview
+    arguments: [@api_views_default]
+    shared:   true
   config:
     class:    api_config
     shared:   true
@@ -87,3 +91,6 @@ services:
     class: api_filter_replace
   api_filter_tidy:
     class: api_filter_tidy    
+  api_filter_directresponse:
+    class: api_filter_directresponse
+    arguments: [@response_withview]

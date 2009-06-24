@@ -1,5 +1,6 @@
 default: &default
     configCache: false
+    allowDomDump: true
     tmpdir: "{API_PROJECT_DIR}tmp/"
 
 #    autoload: myautoload.php
@@ -29,6 +30,7 @@ default: &default
        request:
             api_filter_hellocheck: ~
             controller: ~
+            api_filter_directresponse: ~
        response:
             api_filter_replace: ~
             api_filter_tidy: ~
