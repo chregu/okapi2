@@ -64,7 +64,18 @@ services:
     shared:   true
   controller:
     class:    api_controller
-    arguments: [@request, @routing, @config]
+    arguments:
+      request: @request
+      routing: @routing
+      config: @config
+      filters:
+        request:
+          api_filter_hellocheck: ~
+          controller: ~
+          api_filter_directresponse: ~
+        response:
+          api_filter_replace: ~
+          api_filter_tidy: ~
     shared:   true
   route:
     class:    api_routing_route
