@@ -105,3 +105,10 @@ services:
   api_filter_directresponse:
     class: api_filter_directresponse
     arguments: [@response_withview,@route]
+  sfEventDispatcher:
+    class:    sfEventDispatcher
+    shared:   true
+  sfRequestHandler:
+    class:    sfRequestHandler
+    arguments: [@sfEventDispatcher]
+    shared:   true
