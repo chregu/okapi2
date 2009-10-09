@@ -8,8 +8,6 @@ default: &default
         file: sfServiceContainer.yml
         class: myServiceContainer
 
-    tmpdir: "<?php echo API_PROJECT_DIR; ?>tmp/"
-
     exceptionhandler:
         "*": plain
 
