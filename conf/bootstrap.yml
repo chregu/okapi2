@@ -1,0 +1,21 @@
+default: &default
+    configCache: true
+
+#    autoload: myautoload.php
+
+    serviceContainer:
+        loader: sfServiceContainerLoaderFileYaml
+        file: sfServiceContainer.yml
+        class: myServiceContainer
+
+    tmpdir: "<?php echo API_PROJECT_DIR; ?>tmp/"
+
+    exceptionhandler:
+        "*": plain
+
+production:
+    <<: *default
+
+local: &local
+    <<: *default
+    configCache: false
