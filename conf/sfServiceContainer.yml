@@ -70,41 +70,26 @@ services:
       config: @config
       filters:
         request:
-          api_filter_hellocheck: ~
-          controller: ~
-          api_filter_directresponse: ~
+#          api_filter_XXX: ~
         response:
-          api_filter_replace: ~
-          api_filter_tidy: ~
-    shared:   true
-  route:
-    class:    api_routing_route
+#          api_filter_XXX: ~
     shared:   true
   html:
     class:    api_views_html
-    arguments: [@route, @request, @response]
+    arguments: [@routing, @request, @response]
     shared:   false
   json:
     class:    api_views_json 
-    arguments: [@route, @request, @response]
+    arguments: [@routing, @request, @response]
     shared:   false
   api_views_default:
     class:    api_views_default
-    arguments: [@route, @request, @response, @config, @i18n]
+    arguments: [@routing, @request, @response, @config, @i18n]
     shared:   true
   api_command_default:
     class:    api_command_default
-    arguments: [@route, @request, @response, @config]
+    arguments: [@routing, @request, @response, @config]
     shared:   true
-  api_filter_hellocheck:
-    class: api_filter_hellocheck
-  api_filter_replace:
-    class: api_filter_replace
-  api_filter_tidy:
-    class: api_filter_tidy    
-  api_filter_directresponse:
-    class: api_filter_directresponse
-    arguments: [@response_withview,@route]
   sfEventDispatcher:
     class:    sfEventDispatcher
     shared:   true
