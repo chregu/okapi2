@@ -4,7 +4,7 @@
 define('API_CACHE_BOOTSTRAP_YAML', 1);
 
 require_once dirname(__FILE__) . '/../inc/api/init.php';
-$sc = api_init::start();
+$sc = api_init::createServiceContainer();
 // get route
 $sc->routingcontainer;
 $ctrl = $sc->controller;
