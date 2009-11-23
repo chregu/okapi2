@@ -5,10 +5,20 @@ services:
     shared:   false
   routing:
     class:    api_routing
+    arguments:
+      dispatcher: @sfEventDispatcher
+      request: @request
     shared:   true
   request:
     class:    api_request
-    arguments: [@config]
+    arguments:
+      lang:
+        default: de
+        acceptBrowserLang: false
+        languages: [en,de,fr,it]
+      extensions:
+        default: html
+        allowed: [html, json, js]
     shared:   true
   response:
     class:    api_response
@@ -21,16 +31,9 @@ services:
     class:    api_response_withview
     arguments: [@api_views_default]
     shared:   true
-  config:
-    class:    api_config
-    shared:   true
-  log:
-    class:    api_log
-    arguments: [@config]
-    shared:   true
   i18n:
     class:    api_i18n_dispatcher
-    arguments: [@config]
+    arguments: []
     shared:   true
   db:
     class:    XXX
@@ -46,7 +49,6 @@ services:
     arguments:
         opts:
           class: XXX
-        config: @config
         request: @request
         db: @db
     shared:   true
@@ -55,19 +57,17 @@ services:
     arguments:
         opts:
           class: crud
-        config: @config
         response: @response
     shared:   true
   pam:
     class:    api_pam
-    arguments: [@config, @auth, @perm]
+    arguments: [@auth, @perm]
     shared:   true
   controller:
     class:    api_controller
     arguments:
       request: @request
       routing: @routing
-      config: @config
       filters:
         request:
 #          api_filter_XXX: ~
@@ -84,11 +84,11 @@ services:
     shared:   false
   api_views_default:
     class:    api_views_default
-    arguments: [@routing, @request, @response, @config, @i18n]
+    arguments: [@routing, @request, @response, @i18n]
     shared:   true
   api_command_default:
     class:    api_command_default
-    arguments: [@routing, @request, @response, @config]
+    arguments: [@routing, @request, @response]
     shared:   true
   sfEventDispatcher:
     class:    sfEventDispatcher
