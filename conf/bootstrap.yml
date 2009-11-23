@@ -5,7 +5,8 @@ default: &default
 
     serviceContainer:
         loader: sfServiceContainerLoaderFileYaml
-        file: sfServiceContainer.yml
+        file: default
+        extension: .yml
         class: myServiceContainer
 
     exceptionhandler:
