@@ -1,0 +1,20 @@
+parameters:
+  arguments: &arguments
+    routing: @routing
+    request: @request
+    response: @response
+    options: &options
+      outputCaching: %outputCaching%
+      staticContentURI: %staticContentURI%
+      debug: %debug%
+    db: @db
+    pam: @pam
+    session: @session
+    log: %log%
+    view: @default
+services:
+  api_command_default:
+    class:    api_command_default
+    arguments:
+      <<: *arguments
+    shared:   true

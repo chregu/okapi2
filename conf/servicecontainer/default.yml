@@ -1,12 +1,15 @@
+imports:
+  parameters: { resource: parameters.yml, class: sfServiceContainerLoaderFileYaml }
+  commands: { resource: command.yml, class: sfServiceContainerLoaderFileYaml }
 services:
   routingcontainer:
     class:    api_routingcontainer
-    arguments: [@routing]
+    arguments: [@routing, @request]
     shared:   false
   routing:
     class:    api_routing
     arguments:
-      dispatcher: @sfEventDispatcher
+      dispatcher: @dispatcher
       request: @request
     shared:   true
   request:
@@ -15,10 +18,9 @@ services:
       lang:
         default: de
         acceptBrowserLang: false
-        languages: [en,de,fr,it]
+        languages: [en]
       extensions:
         default: html
-        allowed: [html, json, js]
     shared:   true
   response:
     class:    api_response
@@ -33,7 +35,12 @@ services:
     shared:   true
   i18n:
     class:    api_i18n_dispatcher
-    arguments: []
+    arguments: 
+        lang:
+            dir: "lang"
+            fileprefix: lang
+            default: en
+            languages: [en]
     shared:   true
   db:
     class:    XXX
@@ -68,21 +75,16 @@ services:
     arguments:
       request: @request
       routing: @routing
-      filters:
-        request:
-#          api_filter_XXX: ~
-        response:
-#          api_filter_XXX: ~
-    shared:   true
-  html:
-    class:    api_views_html
-    arguments: [@routing, @request, @response]
-    shared:   false
+      events:
+        application.request:
+          controller:
+            service: controller
+            method: request
   json:
     class:    api_views_json 
     arguments: [@routing, @request, @response]
     shared:   false
-  api_views_default:
+  html:
     class:    api_views_default
     arguments: [@routing, @request, @response, @i18n]
     shared:   true
@@ -90,10 +92,10 @@ services:
     class:    api_command_default
     arguments: [@routing, @request, @response]
     shared:   true
-  sfEventDispatcher:
+  dispatcher:
     class:    sfEventDispatcher
     shared:   true
-  sfRequestHandler:
+  requesthandler:
     class:    sfRequestHandler
-    arguments: [@sfEventDispatcher]
+    arguments: [@dispatcher]
     shared:   true
