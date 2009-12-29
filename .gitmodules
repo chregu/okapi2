@@ -1,9 +1,0 @@
-[submodule "submodules/sfYaml"]
-	path = submodules/sfYaml
-	url = git://github.com/fabpot/yaml.git
-[submodule "submodules/sfServiceContainer"]
-	path = submodules/sfServiceContainer
-	url = git://github.com/fabpot/dependency-injection.git
-[submodule "submodules/sfEvent"]
-	path = submodules/sfEvent
-	url = git://github.com/fabpot/event-dispatcher.git
