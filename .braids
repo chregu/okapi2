@@ -1,0 +1,8 @@
+--- 
+submodules/sfYaml: 
+  squashed: true
+  url: git://github.com/fabpot/yaml.git
+  branch: master
+  type: git
+  revision: 9a964acaad70664d4f3c2697a7e49f0ade9c2a54
+  remote: braid/submodules/sfYaml
