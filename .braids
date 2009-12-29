@@ -1,4 +1,11 @@
 --- 
+submodules/sfServiceContainer: 
+  squashed: true
+  url: git://github.com/fabpot/dependency-injection.git
+  branch: master
+  type: git
+  revision: 07ff9ba64221c64a61f2c1fb8fe798b6e68f4970
+  remote: braid/submodules/sfServiceContainer
 submodules/sfYaml: 
   squashed: true
   url: git://github.com/fabpot/yaml.git
