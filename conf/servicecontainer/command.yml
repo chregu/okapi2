@@ -3,7 +3,7 @@ parameters:
     routing: @routing
     request: @request
     response: @response
-    options: &options
+    params: &params
       outputCaching: %outputCaching%
       staticContentURI: %staticContentURI%
       debug: %debug%
