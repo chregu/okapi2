@@ -1,7 +1,7 @@
 <?php
 
 // route name then url with :params, * is the catch-all
-$routing->route('default', '*', 
+$routing->route('default', '*',
     // options
     array(
         'command' => 'default',
@@ -11,6 +11,5 @@ $routing->route('default', '*',
     // default values for url params
     array(),
     // requirements (regex) for url params
-    array(),
+    array()
 );
-
