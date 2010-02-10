@@ -4,14 +4,7 @@ parameters:
     request: @request
     response: @response
     params: &params
-      outputCaching: %outputCaching%
-      staticContentURI: %staticContentURI%
       debug: %debug%
-    db: @db
-    pam: @pam
-    session: @session
-    log: %log%
-    view: @default
 services:
   api_command_default:
     class:    api_command_default
