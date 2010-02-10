@@ -18,7 +18,7 @@ services:
       lang:
         default: de
         acceptBrowserLang: false
-        languages: [en]
+        languages: %languages%
       extensions:
         default: html
     shared:   true
@@ -40,7 +40,7 @@ services:
             dir: "lang"
             fileprefix: lang
             default: en
-            languages: [en]
+            languages: %languages%
     shared:   true
   db:
     class:    XXX
@@ -87,10 +87,6 @@ services:
   html:
     class:    api_views_default
     arguments: [@routing, @request, @response, @i18n]
-    shared:   true
-  api_command_default:
-    class:    api_command_default
-    arguments: [@routing, @request, @response]
     shared:   true
   dispatcher:
     class:    sfEventDispatcher
