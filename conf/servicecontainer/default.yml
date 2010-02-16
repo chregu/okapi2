@@ -1,0 +1,97 @@
+imports:
+  parameters: { resource: parameters.yml, class: sfServiceContainerLoaderFileYaml }
+  commands: { resource: command.yml, class: sfServiceContainerLoaderFileYaml }
+services:
+  routingcontainer:
+    class:    api_routingcontainer
+    arguments: [@routing, @request]
+    shared:   false
+  routing:
+    class:    api_routing
+    arguments:
+      dispatcher: @dispatcher
+      request: @request
+    shared:   true
+  request:
+    class:    api_request
+    arguments:
+      lang:
+        default: de
+        acceptBrowserLang: false
+        languages: %languages%
+      extensions:
+        default: html
+    shared:   true
+  response:
+    class:    api_response
+    shared:   true
+  response_exception:
+    class:    api_response_exception
+    arguments: [@api_views_default]
+    shared:   true
+  response_withview:
+    class:    api_response_withview
+    arguments: [@api_views_default]
+    shared:   true
+  i18n:
+    class:    api_i18n_dispatcher
+    arguments:
+        lang:
+            dir: "lang"
+            fileprefix: lang
+            default: en
+            languages: %languages%
+    shared:   true
+  db:
+    class:    XXX
+    arguments:
+      dsn:
+        host: localhost
+        username: root
+        password:
+        dbname: XXX
+    shared:   true
+  auth:
+    class:    api_pam_auth_XXX
+    arguments:
+        opts:
+          class: XXX
+        request: @request
+        db: @db
+    shared:   true
+  perm:
+    class:    api_pam_perm_XXX
+    arguments:
+        opts:
+          class: crud
+        response: @response
+    shared:   true
+  pam:
+    class:    api_pam
+    arguments: [@dispatcher, @auth, @perm]
+    shared:   true
+  controller:
+    class:    api_controller
+    arguments:
+      request: @request
+      routing: @routing
+      events:
+        application.request:
+          controller:
+            service: controller
+            method: request
+  json:
+    class:    api_views_json
+    arguments: [@routing, @request, @response]
+    shared:   false
+  html:
+    class:    api_views_default
+    arguments: [@routing, @request, @response, @i18n]
+    shared:   true
+  dispatcher:
+    class:    sfEventDispatcher
+    shared:   true
+  requesthandler:
+    class:    sfRequestHandler
+    arguments: [@dispatcher]
+    shared:   true

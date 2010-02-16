@@ -1,0 +1,12 @@
+parameters:
+  log: false
+  db_charset: @db_charset
+  db_logger: false
+  db_cache: null
+  languages: [de,en,fr,it]
+  extensions: [html, js, json]
+  outputCaching: true
+  staticContentURI: /
+  useYahooCDN: false
+  debug: false
+  dsn: false

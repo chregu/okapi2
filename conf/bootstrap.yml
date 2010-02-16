@@ -1,0 +1,20 @@
+default: &default
+    configCache: true
+
+#    autoload: myautoload.php
+
+    serviceContainer:
+        loader: sfServiceContainerLoaderFileYaml
+        file: default
+        extension: .yml
+        class: myServiceContainer
+
+    exceptionhandler:
+        "*": plain
+
+production:
+    <<: *default
+
+local: &local
+    <<: *default
+    configCache: false

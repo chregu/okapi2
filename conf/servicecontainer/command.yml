@@ -1,0 +1,13 @@
+parameters:
+  arguments: &arguments
+    routing: @routing
+    request: @request
+    response: @response
+    params: &params
+      debug: %debug%
+services:
+  api_command_default:
+    class:    api_command_default
+    arguments:
+      <<: *arguments
+    shared:   true
