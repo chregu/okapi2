@@ -35,7 +35,7 @@ services:
     shared:   true
   i18n:
     class:    api_i18n_dispatcher
-    arguments: 
+    arguments:
         lang:
             dir: "lang"
             fileprefix: lang
@@ -68,7 +68,7 @@ services:
     shared:   true
   pam:
     class:    api_pam
-    arguments: [@auth, @perm]
+    arguments: [@dispatcher, @auth, @perm]
     shared:   true
   controller:
     class:    api_controller
@@ -81,7 +81,7 @@ services:
             service: controller
             method: request
   json:
-    class:    api_views_json 
+    class:    api_views_json
     arguments: [@routing, @request, @response]
     shared:   false
   html:
