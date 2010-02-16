@@ -1,0 +1,24 @@
+UPGRADE GUIDE TO OKAPI2
+=======================
+
+Backwards Compatibility Breaks
+------------------------------
+
+* api_response::setCookie() :
+  - $maxage is now $expires which should be a unix timestamp and not
+    a duration in seconds, max-age isn't supported in all browsers.
+  - $httpOnly now defaults to true since it's a more secure default,
+    set it to false if you really need to read cookies from javascript.
+    This does not affect XHR though, so it is seldomly needed.
+
+New Features
+------------
+
+* You can have a local _my.yml file that will take over the default 
+  okapi conf, for dev setups that shouldn't be committed
+
+TO BE DOCUMENTED:
+- routes
+- exceptions
+- core stuff (yaml conf etc)
+- Iauth
