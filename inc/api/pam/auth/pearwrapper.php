@@ -10,10 +10,10 @@
  */
 class api_pam_auth_pearwrapper extends api_pam_common implements api_pam_Iauth {
     /** Instance of PEAR Auth. */
-    private $pAuth = null;
+    protected $pAuth;
 
     /** Field to treat as ID field from the auth data hash. */
-    private $pIdField = 'id';
+    protected $pIdField = 'id';
 
     /**
      * Constructor.
@@ -83,7 +83,7 @@ class api_pam_auth_pearwrapper extends api_pam_common implements api_pam_Iauth {
      * Sets default PEAR Auth configuration. Currently calls
      * setShowLogin(false).
      */
-    private function setPearDefaults() {
+    protected function setPearDefaults() {
         if ($this->pAuth) {
             $this->pAuth->setShowLogin(false);
         }
@@ -94,7 +94,7 @@ class api_pam_auth_pearwrapper extends api_pam_common implements api_pam_Iauth {
      * defaults to the MDB2 container.
      * @return Auth: Auth object.
      */
-    private function getPearAuth() {
+    protected function getPearAuth() {
         $container = $this->getOpt('container', 'MDB2');
         $a = new Auth($container, $this->opts);
         if ($a instanceof Auth) {

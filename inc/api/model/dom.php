@@ -9,7 +9,7 @@
  */
 class api_model_dom extends api_model {
     /** DOMDocument: The dom-object */
-    private $dom = NULL;
+    protected $dom;
 
     /**
      * Constructor.

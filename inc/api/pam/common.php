@@ -6,7 +6,7 @@
 /**
  * Base class for PAM components.
  */
-class api_pam_common {
+abstract class api_pam_common {
     /** Component configuration, passed in through the constructor. */
     protected $opts = array();
 

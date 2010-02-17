@@ -24,6 +24,7 @@
  *         class name to load. A wildcard rule "*" can be specified as
  *         the default rule.
  */
+// TODO major cleanup required
 class api_exceptionhandler {
     /** Wildcard exception. Used in the config file to specify the
         default exception. */
@@ -35,7 +36,7 @@ class api_exceptionhandler {
     const DEFAULT_HANDLER = 'default';
 
     /** Loaded api_exceptionhandler_base instances. */
-    private static $instances = array();
+    protected static $instances = array();
 
     /**
      * Handle the exception with the appropriate handler as configured
@@ -85,7 +86,7 @@ return;
      *        exception handlers to handle XSLT output.
      * @return api_exceptionhandler_base instance
      */
-    private static function getInstance(Exception $e, $context) {
+    protected static function getInstance(Exception $e, $context) {
         $class = get_class($e);
         if (!isset(self::$instances[$class])) {
             self::$instances[$class] = self::createInstance($class);
@@ -115,7 +116,7 @@ return;
      *        exception handler for.
      * @return api_exceptionhandler_base instance
      */
-    private static function createInstance($eClassName) {
+    protected static function createInstance($eClassName) {
         $variations = array(
             $eClassName,
             api_helpers_class::getBaseName($eClassName),
@@ -142,7 +143,7 @@ return;
      * @param $name string: Exception class name
      * @return string
      */
-    private static function getExceptionHandlerClassName($name) {
+    protected static function getExceptionHandlerClassName($name) {
         return "api_exceptionhandler_" . $name;
     }
 }

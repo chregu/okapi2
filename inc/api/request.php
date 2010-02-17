@@ -23,7 +23,7 @@ class api_request {
     /** if the default language was used or not */
     protected $langDefaultUsed = false;
     /** api_params: Request parameters. */
-    protected $params = null;
+    protected $params;
     /** Filename extracted from the path. */
     protected $filename = '';
     /** Extension extracted from the path. */
@@ -99,7 +99,7 @@ class api_request {
              * the rest is not parsed as an extension */
             if (isset($extensions['allowed'])) {
                 $aExtensions = $extensions['allowed'];
-                
+
                 if (preg_match("#\.([a-z]+)$#", $this->filename, $matches)) {
                     if (is_array($aExtensions) && in_array($matches[1], $aExtensions)) {
                         $this->extension = $matches[1];
@@ -258,7 +258,7 @@ class api_request {
      * @param $path string: Path to parse.
      * @return string: File name
      */
-    private function parseFilename($path) {
+    protected function parseFilename($path) {
         preg_match("#[\s\w\xc0-\xff\-\_\%2F\+]*\.[a-z0-9]{1,}$#i", $path, $matches);
         if (isset($matches[0])) {
             return api_helpers_string::ensureUtf8(urldecode($matches[0]));
@@ -274,7 +274,7 @@ class api_request {
      * @param $path string: Path to parse.
      * @return hash: Parsed path.
      */
-    private function getLanguageFromPath($path) {
+    protected function getLanguageFromPath($path) {
         // Path
         preg_match("#^\/([a-z]{2})(\/|$)#", $path, $matches);
         if (isset($matches[1]) && in_array($matches[1], $this->outputLangs)) {
@@ -300,7 +300,7 @@ class api_request {
      * @param $path string: Path to parse.
      * @return hash: Parsed path.
      */
-    private function parseLanguage($path) {
+    protected function parseLanguage($path) {
         $newpath = $path;
 
         if ($retval = $this->getLanguageFromPath($path)) {

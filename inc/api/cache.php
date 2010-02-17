@@ -29,6 +29,7 @@
  * @see api_config
  * @see http://www.php.net/memcache - PHP memcache module
  */
+// TODO rework for DI and add support for drivers
 class api_cache {
     /**
      * api_cache: Instance of this class which is returned in getInstance().
@@ -43,9 +44,11 @@ class api_cache {
     protected $prefix = '';
 
     /**
-     * Memcache: Memcache object which the object is proxying.
+     * Memcache object which the object is proxying.
+     *
+     * @var memcache
      */
-    private $cache;
+    protected $cache;
 
     /**
      * int: Controls how often a failed server will be retried. Value is
@@ -57,7 +60,7 @@ class api_cache {
      * Constructor. Reads configuration values and connects to the
      * memcached daemons.
      */
-    private function __construct() {
+    public function __construct() {
         $this->cache = new Memcache();
 
         $this->prefix = api_config::getInstance()->revision;
@@ -78,18 +81,6 @@ class api_cache {
         } else {
             $this->connect('localhost');
         }
-    }
-
-    /**
-     * Get an object of type api_cache to use.
-     * @return api_cache
-     */
-    public static function getInstance() {
-        if (!isset(self::$instance)) {
-            self::$instance = new api_cache;
-        }
-
-        return self::$instance;
     }
 
     /**

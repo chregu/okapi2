@@ -53,19 +53,19 @@ class api_pam {
      * api_pam: Instance returned by getInstance()
      * @var api_pam
      */
-    private static $instance = null;
+    protected static $instance;
 
     /**
      * auth instance
      * @var api_pam_Iauth
      */
-    private $auth;
+    protected $auth;
 
     /**
      * perm instance
      * @var api_pam_Iperm
      */
-    private $perm;
+    protected $perm;
 
     /**
      * event dispatcher instance
@@ -73,29 +73,20 @@ class api_pam {
      */
     protected $dispatcher;
 
-    /** string constant: Prefix for all class names in this package. */
-    private $clsNameBase = 'api_pam';
-
-    /** string constant: Prefix for the permission classes in this package. */
-    private $permprefix = 'perm';
-
-    /** string constant: Prefix for the authentication classes in this package. */
-    private $authprefix = 'auth';
-
     /** array: Configuration of the authentication part. */
-    private $authConf = array();
+    protected $authConf = array();
 
     /** array: Configuration of the permission part. */
-    private $permConf = array();
+    protected $permConf = array();
 
     /** string constant: Key for default settings. */
-    private $confDefaultName = 'default';
+    protected $confDefaultName = 'default';
 
     /** string: Authentication scheme in use. */
-    private $authScheme = '';
+    protected $authScheme = '';
 
     /** string: Permission scheme in use. */
-    private $permScheme = '';
+    protected $permScheme = '';
 
     /**
      * Constructor. Loads the PAM configuration.
@@ -265,13 +256,17 @@ class api_pam {
      *        if the user has access or not.
      * @param string $acValueAccess control value. Used in the same way as
      *        the $acObject param.
+     * @param int $uid user id, if nothing is passed the current user id
+     *        will be used
      * @return bool True if the user is allowed to access the object or no
      *        perm container has been defined in the configuration
      * @see api_pam_Iperm::isAllowed()
      */
-    public function isAllowed($acObject, $acValue) {
+    public function isAllowed($acObject, $acValue, $uid = null) {
         if (($po = $this->getPermObj()) !== false) {
-            $uid = $this->getUserId();
+            if ($uid === null) {
+                $uid = $this->getUserId();
+            }
             return $po->isAllowed($uid, $acObject, $acValue);
         }
         return true;
@@ -302,7 +297,6 @@ class api_pam {
      * the other scheme, set it like this:
      *
      * \code
-     * $pam = api_pam::getInstance();
      * $pam->setAuthScheme('other');
      * \endcode
      *
@@ -361,7 +355,7 @@ class api_pam {
      *
      * @return api_pam_Iperm Permission object.
      */
-    private function getPermObj() {
+    protected function getPermObj() {
         return $this->perm;
     }
 
@@ -370,50 +364,7 @@ class api_pam {
      *
      * @return api_pam_Iauth Authentication object.
      */
-    private function getAuthObj() {
+    protected function getAuthObj() {
         return $this->auth;
-    }
-
-    /**
-     * Returns a authentication or permission object. Re-uses existing
-     * objects if possible.
-     *
-     * @param string $prefix Object type to return - "auth" or "perm"
-     * @param string $scheme Configuration scheme to use
-     * @return object Authentication or permission object.
-     */
-    private function pamGetObject($prefix, $scheme) {
-        $objArr = $prefix."Obj";
-        $cfgArr = $prefix."Conf";
-
-        $instBase = $this->clsNameBase."_".$prefix;
-
-        if (isset($this->{$objArr}[$scheme]) && ($this->{$objArr}[$scheme] instanceof $instBase)) {
-            return $this->{$objArr}[$scheme];
-        } else if (isset($this->{$cfgArr}[$scheme])) {
-            return $this->pamLoadObject($prefix, $this->{$cfgArr}[$scheme]);
-        }
-        return false;
-    }
-
-    /**
-     * Creates a new authentication or permission object.
-     *
-     * @param string $prefix Object type to return - "auth" or "perm"
-     * @param array $cfg Configuration values. The 'class' value is used
-     *        to determine the actual class to use for creating the object.
-     */
-    private function pamLoadObject($prefix, $cfg) {
-        $className = $this->clsNameBase . "_" . $prefix . "_" . $cfg['class'];
-        if (! class_exists($className)) {
-            return false;
-        }
-
-        $opts = isset($cfg['options']) ? $cfg['options'] : array();
-        $obj = new $className($opts);
-        if ($obj instanceof $className) {
-            return $obj;
-        }
-        return false;
     }
 }

@@ -16,13 +16,7 @@ define('API_STATE_READY', 1);
 define('API_STATE_FALSE', 0);
 
 /**
- * Main controller to handle whole request. Should be used in your
- * application's index.php like this:
- *
- * \code
- * $ctrl = new api_controller();
- * $ctrl->process();
- * \endcode
+ * Main controller to handle whole request.
  *
  * @author   Silvan Zurbruegg
  */
