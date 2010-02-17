@@ -12,12 +12,12 @@
 class api_init {
     /** bool: True if Okapi has been initialized already. Used so that
       * api_init::start() can be called repeatedly without problems. */
-    private static $initialized = false;
+    protected static $initialized = false;
 
     /**
      * @var array bootstrap config array
      */
-    private static $cfg;
+    protected static $cfg;
 
     /**
      * Sets up the Okapi environment.

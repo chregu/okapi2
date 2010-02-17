@@ -4,7 +4,7 @@ class api_i18n_dispatcher {
 
     /** array: Instances as returned by the getInstance() method.
      * One instance is stored for each language. */
-    private static $instances = array();
+    protected static $instances = array();
     protected  $retrieverName = null;
 
     public function __construct($config) {

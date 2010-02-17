@@ -46,17 +46,14 @@ class api_i18n {
 
 
     /** string: Namespace used in the XML documents to find i18n nodes. */
-    private $ns = 'http://apache.org/cocoon/i18n/2.1';
+    protected $ns = 'http://apache.org/cocoon/i18n/2.1';
 
     /** api_i18n_*: The retriever used to get language strings.
      * @see api_i18n_default
      */
-    private $retriever = null;
+    protected $retriever;
 
     /**
-     * Private constructor. Use the getInstance() method to get objects
-     * of this class. Loads the retriever class as well.
-     *
      * @param $lang string: Language into which this object will translate.
      */
     public function __construct($config) {
@@ -141,7 +138,7 @@ class api_i18n {
      * @param $xp DOMXPath: Instance of DOMXPath of $node's document.
      *                      Passed in for performance reasons.
      */
-    private function i18nTranslate($node, $xp) {
+    protected function i18nTranslate($node, $xp) {
         $i = 0;
         $params = array();
 
@@ -201,7 +198,7 @@ class api_i18n {
      * @param $xp DOMXPath: Instance of DOMXPath of $node's document.
      *                      Passed in for performance reasons.
      */
-    private function i18nCleartext($node, $xp) {
+    protected function i18nCleartext($node, $xp) {
         $text = '';
 
         $translateNode = $xp->query('i18n:translate');
@@ -239,7 +236,7 @@ class api_i18n {
      * @param $xp   DOMXPath: Instance of DOMXPath of $node's document.
      *                        Passed in for performance reasons.
      */
-    private function getClearTextPart($part, $node, $xp) {
+    protected function getClearTextPart($part, $node, $xp) {
         $partNode = $xp->query('i18n:' . $part, $node);
         if ($partNode->length == 0) {
             return '';
@@ -267,7 +264,7 @@ class api_i18n {
      *
      * @param $node DOMNode: i18n:text node.
      */
-    private function i18nTranslateText($node) {
+    protected function i18nTranslateText($node) {
         $key = $text = '';
         if ($node->hasAttributeNS($this->ns,"key")) {
             $key = $node->getAttributeNS($this->ns,"key");
@@ -301,7 +298,7 @@ class api_i18n {
      * @param $key string: Key of the language string to return.
      * @return string: Translation string from the language file.
      */
-    private function i18nGetMessage($key) {
+    protected function i18nGetMessage($key) {
         return $this->retriever->get($key);
     }
 
@@ -315,7 +312,7 @@ class api_i18n {
      *
      * @param $lang string: Language to load the retriever for.
      */
-    private function loadRetriever($lang, $cfg) {
+    protected function loadRetriever($lang, $cfg) {
         $retriever = 'default';
         if (isset($cfg['retriever'])) {
             $retriever = $cfg['retriever'];

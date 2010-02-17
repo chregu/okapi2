@@ -39,9 +39,13 @@
  *         The "conn" part is the connection name and can be
  *         changed to whatever name you desire.
  */
+// TODO delete class?
 class api_db {
     /** All instances loaded so far by api_db::factory(). */
     protected static $instances = array();
+
+    public function __construct() {
+    }
 
     /**
      * Returns the database connection specified by $name.
@@ -107,12 +111,6 @@ class api_db {
     }
 
     /**
-     * Constructor. Private according to the singleton pattern.
-     */
-    private function __construct() {
-    }
-
-    /**
      * Returns a connection from the driver using it's getDBConnection()
      * method.
      *
@@ -120,7 +118,7 @@ class api_db {
      * @return DatabaseConnection: Database connection retrieved from
      *         the driver.
      */
-    private static function get($config, $log = null) {
+    protected static function get($config, $log = null) {
         if (empty($config['dsn']) && empty($config['host'])) {
             return false;
         }

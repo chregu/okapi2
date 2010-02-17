@@ -105,7 +105,7 @@ abstract class api_testing_case_functional extends api_testing_case_phpunit {
      * @param string $extension allows the query's extension to be specified
      * @return string|array response text or command's data property if ext is json
      */
-    private function request($route, $routeParams, $params=array(), $mocks=array(), $extension=null) {
+    protected function request($route, $routeParams, $params=array(), $mocks=array(), $extension=null) {
         $this->sc = api_init::createServiceContainer();
         $this->sc->routingcontainer;
         $path = $this->sc->routing->gen($route, (array) $routeParams);
@@ -206,7 +206,7 @@ abstract class api_testing_case_functional extends api_testing_case_phpunit {
      * uploads the picture vw_golf.jpg (which has to exist in the
      * current working directory for that example).
      */
-    private function uploadFiles(&$post, &$files) {
+    protected function uploadFiles(&$post, &$files) {
         foreach ($post as $key => $value) {
             if (is_string($value) && strlen($value) >= 1 && $value[0] == '@') {
                 $orig_file = substr($value, 1);
@@ -243,7 +243,7 @@ abstract class api_testing_case_functional extends api_testing_case_phpunit {
     /**
      * Remove all uploaded files from the current request.
      */
-    private function removeUploadedFiles() {
+    protected function removeUploadedFiles() {
         foreach ($_FILES as $key => $arr) {
             if (is_file($arr['tmp_name'])) {
                 unlink($arr['tmp_name']);

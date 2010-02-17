@@ -10,13 +10,13 @@
  */
 class api_params extends ArrayObject {
     /** Hash with all POST parameters. */
-    private $post = array();
+    protected $post = array();
 
     /** Hash with all GET parameters. */
-    private $get = array();
+    protected $get = array();
 
     /** Hash with all route parameters. */
-    private $route = array();
+    protected $route = array();
 
     /**
      * Constructor. Initializes the array object.

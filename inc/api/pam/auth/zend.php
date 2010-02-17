@@ -10,7 +10,8 @@ require_once('Zend/Auth.php');
  * classes.
  * @see http://framework.zend.com/manual/zend.auth.html
  */
-class api_pam_auth_zend extends api_pam_common  implements api_pam_Iauth {
+// TODO fix for DI and support new Iauth functions
+class api_pam_auth_zend extends api_pam_common implements api_pam_Iauth {
     /** Zend_Auth instance which is proxied through this class. */
     protected static $zaAuth = null;
 

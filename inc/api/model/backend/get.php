@@ -48,6 +48,7 @@
  *
  * @author   Patrice Neff
  */
+// TODO fix for DI
 class api_model_backend_get extends api_model_http {
     /** string: Configured server to get configuration from. */
     protected $server = '';

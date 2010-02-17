@@ -11,6 +11,7 @@
  * @author   Patrice Neff
  * @see api_cache
  */
+// TODO fix for DI, or delete?
 class api_model_memcache extends api_model {
     /** DOMDocument: The loaded XML response. */
     protected $dom = null;
