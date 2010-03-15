@@ -28,7 +28,7 @@ class mock_response extends api_response {
     /**
      * Catch redirects and thrown a testing exception for that.
      */
-    public function redirect($to, $status=301) {
+    public function redirect($to=null, $status=301) {
         throw new api_testing_exception("Redirect $status => $to");
     }
 
