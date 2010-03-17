@@ -17,10 +17,10 @@ class api_response_exception extends api_response {
      */
     protected $view = null;
 
-    public function __construct(api_views_common $view = null) {
+    public function __construct($session, api_views_common $view = null) {
         $this->view = $view;
         $this->view->setResponse($this);
-        parent::__construct();
+        parent::__construct($session);
         //TODO - Insert your code here
     }
 
@@ -31,7 +31,7 @@ echo '<h1>Exception ('.$data['name'].'): '.$data['message'].' (#'.$data['code'].
 foreach ($data['backtrace'] as $i=>$line) {
     echo '<p>#'.($i+1).' '.@$line['class'].@$line['type'].@$line['function'].' called in file '.@$line['file'].' at line '.@$line['line'].'</p>';
 }
-session_write_close();
+$this->session->commit();
 die;
 
         $data = array();

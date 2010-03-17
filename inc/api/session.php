@@ -103,7 +103,7 @@ class api_session {
         return $this->read($p) !== null;
     }
 
-    public function __destruct() {
+    public function commit() {
         return $this->storage->commit();
     }
 }

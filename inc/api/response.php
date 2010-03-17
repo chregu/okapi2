@@ -32,10 +32,13 @@ class api_response {
     protected $content = "";
     public $viewParams = array();
 
+    protected $session;
+
     /**
      * Constructor. Turns on output buffering.
      */
-    public function __construct($buffer = null) {
+    public function __construct($session, $buffer = null) {
+        $this->session = $session;
         $this->buffer = is_null($buffer) ? PHP_SAPI !== 'cli' : $buffer;
         if ($this->buffer) {
             ob_start();
@@ -175,9 +178,7 @@ class api_response {
         $this->setHeader('Location', $to);
         $this->send();
 
-        // manually flush the session because of a bug with APC and custom session handlers
-        session_write_close();
-
+        $this->session->commit();
         die;
     }
 
@@ -207,8 +208,7 @@ class api_response {
             print $this->content;
         }
 
-        // manually flush the session because of a bug with APC and custom session handlers
-        session_write_close();
+        $this->session->commit();
 
         if ($this->setContentLengthOutput) {
             die;
