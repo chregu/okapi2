@@ -14,8 +14,8 @@ class mock_response extends api_response {
     /**
      * Constructor. Turns on output buffering.
      */
-    public function __construct($buffering = false) {
-        parent::__construct($buffering);
+    public function __construct($session, $buffering = false) {
+        parent::__construct($session, $buffering);
     }
 
     /**

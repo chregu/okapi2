@@ -8,11 +8,11 @@ class api_response_withview extends api_response {
      */
     protected $view = null;
 
-    public function __construct(api_views_common $view = null) {
+    public function __construct($session, api_views_common $view = null) {
         $this->view = $view;
         $this->view->setResponse($this);
 
-        parent::__construct();
+        parent::__construct($session);
     }
 
     public function setXsl($xsl) {
