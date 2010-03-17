@@ -31,6 +31,7 @@ echo '<h1>Exception ('.$data['name'].'): '.$data['message'].' (#'.$data['code'].
 foreach ($data['backtrace'] as $i=>$line) {
     echo '<p>#'.($i+1).' '.@$line['class'].@$line['type'].@$line['function'].' called in file '.@$line['file'].' at line '.@$line['line'].'</p>';
 }
+session_write_close();
 die;
 
         $data = array();
