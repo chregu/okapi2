@@ -35,12 +35,21 @@ class api_session_php implements api_session_Idriver {
      */
     public function __construct($namespace = 'okapi') {
         session_start();
-        $this->request = $this->store = isset($_SESSION[$namespace]) ? $_SESSION[$namespace] : array('flash' => array(), 'data' => array());
+
         $this->namespace = $namespace;
+
+        $this->request = $this->store = $this->getCurrentSession();
 
         // clear old flash messages so they don't propagate to the next request
         // they remain readable in $this->request though
         $this->store['flash'] = array();
+        if (!isset($this->request['flash'])) {
+            $this->request['flash'] = array();
+        }
+    }
+
+    protected function getCurrentSession() {
+        return isset($_SESSION[$this->namespace]) ? $_SESSION[$this->namespace] : array('flash' => array(), 'data' => array());
     }
 
     /**
