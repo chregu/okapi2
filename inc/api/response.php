@@ -174,7 +174,11 @@ class api_response {
         $this->setCode($status);
         $this->setHeader('Location', $to);
         $this->send();
-        exit();
+
+        // manually flush the session because of a bug with APC and custom session handlers
+        session_write_close();
+
+        die;
     }
 
     /**
@@ -203,8 +207,11 @@ class api_response {
             print $this->content;
         }
 
+        // manually flush the session because of a bug with APC and custom session handlers
+        session_write_close();
+
         if ($this->setContentLengthOutput) {
-            die();
+            die;
         }
     }
 
