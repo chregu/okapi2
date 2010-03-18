@@ -114,13 +114,27 @@ class api_controller {
     }
 
     public function exception(sfEvent $event) {
-
-        //FIXME: This is another approach than we took in Okapi1.
-        // I'm not sure it's better, but it uses the exceptionhandler of sfRequestHandler
-        // Maybe we should mix it
         $r = $this->sc->response_exception;
         $r->data = $event['exception'];
         $event->setReturnValue($r);
+
+        // render exception
+        $viewName = $this->getViewName($this->route, $this->request, $r);
+        if ($viewName) {
+            try {
+                $view = $this->sc->$viewName;
+
+                $r->command = $this->sc->response->command;
+                $view->setResponse($r);
+                $view->prepare();
+                $data = $r->getInputData();
+                $view->dispatchException($data);
+            } catch (Exception $e) {
+                // The exception view could not be rendered, this is
+                // a total disaster case, therefore we output plain text
+                $r->renderPlainException($e);
+            }
+        }
 
         return true;
     }
@@ -167,9 +181,8 @@ class api_controller {
             }
             $view->setResponse($response);
             $view->prepare();
-            //FIXME: shouldn't we just pass the response object to the view?
             $data = $response->getInputData();
-            $view->dispatch($data, $this->getExceptions());
+            $view->dispatch($data);
         }
         return $response;
     }
@@ -255,72 +268,6 @@ class api_controller {
 
         // Ignore view
         return;
-    }
-
-    /**
-     * Adds Exception to exceptions array. The catchException() method
-     * calls this method for any non-fatal exception. The array of
-     * collected exceptions is later passed to the view so it can still
-     * display them.
-     *
-     * Exceptions are added to the array $this->exceptions.
-     *
-     * @param $e api_exception: Thrown exception
-     * @param $prms array: Additional params passed to catchException()
-     */
-    protected function aggregateException(api_exception $e, array $prms) {
-        if (!empty($prms)) {
-            foreach ($prms as $n => $v) {
-                if (!empty($v)) {
-                    $e->setParam($n, $v);
-                }
-            }
-        }
-
-        array_push($this->exceptions, $e);
-    }
-
-    public function getExceptions() {
-        return $this->exceptions;
-    }
-
-    /**
-     * Catches any exception which has either been rethrown by the
-     * catchException() method or was thrown outside of it's scope.
-     *
-     * Calls api_exceptionhandler::handle() with the thrown exception.
-     *
-     * @param   $e api_exception: Thrown exception, passed to the exceptionhandler.
-     */
-    protected function catchFinalException(Exception $e) {
-        api_exceptionhandler::handle($e, $this);
-        if ($this->response === null) {
-            die();
-        }
-    }
-
-    /**
-     * Catches an exception. Non-fatal and fatal exceptions are handled
-     * differently:
-     *    - fatal: Re-thrown so they abort the current request. Fatal
-     *             exceptions are later passed on to catchFinalException().
-     *    - non-fatal: Processed using aggregateException(). Additionally
-     *                 they are logged by calling api_exceptionhandler::log().
-     *
-     * Exceptions of type api_exceptions (and subclasses) have a getSeverity()
-     * method which indicates if the exception is fatal. All other exceptions
-     * are assumed to always be fatal.
-     *
-     * @param $e api_exception: Thrown exception.
-     * @param $prms array: Parameters to give more context to the exception.
-     */
-    protected function catchException(Exception $e, $prms=array()) {
-        if ($e instanceof api_exception && $e->getSeverity() === api_exception::THROW_NONE) {
-            $this->aggregateException($e, $prms);
-            api_exceptionhandler::log($e);
-        } else {
-            throw $e;
-        }
     }
 
     /**

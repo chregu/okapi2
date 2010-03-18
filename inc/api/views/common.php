@@ -43,12 +43,18 @@ abstract class api_views_common {
 
     /**
      * To be implemented by views for outputting response.
-     * @param $data DOMDocument: DOM document to transform.
-     * @param $exceptions array: Array of exceptions merged into the DOM.
+     * @param mixed $data
      */
-    abstract function dispatch($data, $exceptions = null);
+    abstract function dispatch($data);
 
     /**
+     * To be implemented by views for outputting response in case of an exception.
+     * @param mixed $data
+     */
+    abstract function dispatchException($data);
+
+    /**
+     * TODO move into the api_views_xml class, and make xsl or default extend from that
      * Sends text/xml content type headers.
      *
      * @return   void

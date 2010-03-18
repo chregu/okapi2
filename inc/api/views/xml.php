@@ -14,7 +14,7 @@ class api_views_xml extends api_views_common {
      * @param $exceptions array: Array of exceptions merged into the DOM.
      * @todo Output exceptions as well.
      */
-    public function dispatch($data, $exceptions = null) {
+    public function dispatch($data) {
         if (!is_array($data)) {
             throw new api_exception('Command\'s $data should be an array');
         }
@@ -23,5 +23,10 @@ class api_views_xml extends api_views_common {
 
         $this->setXMLHeaders();
         $this->response->addContent($data->saveXML());
+    }
+
+    public function dispatchException() {
+        // TODO implement
+        throw new Exception('Implement');
     }
 }
