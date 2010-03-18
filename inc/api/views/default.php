@@ -100,6 +100,11 @@ class api_views_default extends api_views_common {
         }
     }
 
+    public function dispatchException() {
+        // TODO implement
+        throw new Exception('Implement');
+    }
+
     /**
      * Return the string to output for the given DOM. By default cleans the
      * XML a bit.

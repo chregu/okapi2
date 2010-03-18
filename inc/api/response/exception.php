@@ -7,46 +7,51 @@ class api_response_exception extends api_response {
      */
     const BACKTRACE_CONTEXT = 8;
 
-    /** Base directory for all exception handler XSLT files. */
-    const VIEWDIR = 'exceptionhandler';
+    protected $debug;
 
-    /**
-     * Enter description here...
-     *
-     * @var api_views_common a view object
-     */
-    protected $view = null;
-
-    public function __construct($session, api_views_common $view = null) {
-        $this->view = $view;
-        $this->view->setResponse($this);
+    public function __construct($session, $debug = false) {
+        $this->debug = $debug;
         parent::__construct($session);
-        //TODO - Insert your code here
     }
 
-    public function send() {
-// TODO remove this hack and make the exception handler return some nicer thingy but maybe not depending on the xsl but rather on the current view or something
-$data = $this->getTrace($this->data);
-echo '<h1>Exception ('.$data['name'].'): '.$data['message'].' (#'.$data['code'].')</h1>thrown in file '.$data['file'].' at line '.$data['line'].'<br/>backtrace:<br/>';
-foreach ($data['backtrace'] as $i=>$line) {
-    echo '<p>#'.($i+1).' '.@$line['class'].@$line['type'].@$line['function'].' called in file '.@$line['file'].' at line '.@$line['line'].'</p>';
-}
-$this->session->commit();
-die;
+    public function renderPlainException($e) {
 
-        $data = array();
-        $data['exception'] = $this->getTrace($this->data);
+        if (!headers_sent()) {
+            header('Content-Type: text/plain');
+        }
 
-        $this->setViewParam("xsl", $this->getXsl());
-        $this->view->prepare();
-        $this->view->dispatch($data);
-        parent::send();
+        if ($this->debug) {
+            $this->outputException($this->data);
+            echo "\r\n\r\n".'On top of this, the view threw an exception while rendering the original exception:'."\r\n";
+            $this->outputException($e);
+        } else {
+            echo 'The site is experiencing technical difficulties, apologies for the disturbance.';
+        }
+
+        $this->session->commit();
+        die;
     }
 
-    public function getXsl() {
-        //$xslName = api_helpers_class::getBaseName($this);
-        $xslName = 'default';
-        return self::VIEWDIR . DIRECTORY_SEPARATOR . $xslName . '.xsl';
+    public function getInputData() {
+        global $sc;
+
+        $data = array(
+            'exception' => $this->getTrace($this->data),
+            'debug' => $this->debug,
+            'sc' => $sc,
+        );
+
+        return $data;
+    }
+
+    protected function outputException($e) {
+        $data = $this->getTrace($e);
+
+        echo 'Exception ('.$data['name'].'): '.$data['message'].' (#'.$data['code'].')'."\r\n".
+            'thrown in file '.$data['file'].' at line '.$data['line']."\r\n\r\nbacktrace:\r\n";
+        foreach ($data['backtrace'] as $i=>$line) {
+            echo '#'.($i+1).' '.@$line['class'].@$line['type'].@$line['function'].' called in file '.@$line['file'].' at line '.@$line['line']."\r\n";
+        }
     }
 
     /**
