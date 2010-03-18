@@ -34,7 +34,9 @@ class api_session_php implements api_session_Idriver {
      * @param string $namespace where in the $_SESSION var the data will be saved
      */
     public function __construct($namespace = 'okapi') {
-        session_start();
+        if (!session_id()) {
+            session_start();
+        }
 
         $this->namespace = $namespace;
 
