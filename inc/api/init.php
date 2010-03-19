@@ -212,7 +212,7 @@ class api_init {
                 $confDir = API_PROJECT_DIR.'conf/servicecontainer/';
                 $file = $confDir . $confFileName . $cfg['serviceContainer']['extension'];
                 $localFile = $confDir . '_my' . $cfg['serviceContainer']['extension'];
-                if (file_exists($localFile)) {
+                if (file_exists($localFile) && strpos($confFileName, 'test') === false) {
                     $file = $localFile;
                 }
 
