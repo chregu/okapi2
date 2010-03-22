@@ -119,6 +119,9 @@ abstract class api_testing_case_functional extends api_testing_case_phpunit {
         $_GET = $_POST = $_REQUEST = $_FILES = array();
         $_SERVER["REQUEST_URI"] = $components['path'];
 
+        if (isset($components['scheme'])) {
+            $_SERVER['HTTP_PORT'] = $components['scheme'] === 'https' ? '443' : '80';
+        }
         if (isset($components['query'])) {
             $_SERVER['REQUEST_URI'] .= '?'.$components['query'];
             $query = array();
