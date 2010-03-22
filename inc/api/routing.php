@@ -24,8 +24,14 @@ class api_routing extends sfPatternRouting {
      */
     protected $request;
 
-    public function __construct($dispatcher, $request = null) {
+    /**
+     * @var bool if true, generates absolute urls for non-ssl routes when the current request is ssl
+     */
+    protected $forceUnsecure;
+
+    public function __construct($dispatcher, $request = null, $forceUnsecure = false) {
         $this->request = $request;
+        $this->forceUnsecure = $forceUnsecure;
         $this->options['context']['prefix'] = API_HOST;
         $this->options['context']['host'] = (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '');
         $this->options['context']['is_secure'] = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443';
@@ -78,6 +84,9 @@ class api_routing extends sfPatternRouting {
         // force https links for ssl routes
         if ($this->routes[$name]['ssl'] && substr(API_HOST, 0, 5) !== 'https') {
             return str_replace('http://', 'https://', API_HOST).API_MOUNTPATH.$this->request->getLang().$url;
+        }
+        if ($this->forceUnsecure && !$this->routes[$name]['ssl'] && substr(API_HOST, 0, 5) === 'https') {
+            return str_replace('https://', 'http://', API_HOST).API_MOUNTPATH.$this->request->getLang().$url;
         }
 
         if ($absolute) {
