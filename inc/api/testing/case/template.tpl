@@ -30,16 +30,16 @@ function __phpunit_run_isolated_test()
     ob_start();
 }
 
-$loadSC = true;
 if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
     unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
 }
 
-{included_files}
 {constants}
 {globals}
+{included_files}
+
+require '{api_project_dir}/tests/bootstrap.php';
 
 __phpunit_run_isolated_test();
 ob_end_clean();
-?>

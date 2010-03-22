@@ -4,10 +4,6 @@
  */
 abstract class api_testing_case_unit extends api_testing_case_phpunit {
 
-    protected function getSC() {
-        return api_init::createServiceContainer();
-    }
-
     /**
      * Gets the DOM node matching the given XPath expression.
      */
