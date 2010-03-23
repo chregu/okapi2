@@ -134,6 +134,8 @@ class api_controller {
                 // a total disaster case, therefore we output plain text
                 $r->renderPlainException($e);
             }
+        } else {
+            $r->renderPlainException();
         }
 
         return true;
