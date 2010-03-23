@@ -89,7 +89,6 @@ class api_response {
                               $secure = false, $httponly = true) {
         if (!empty($expire)) {
             $time = new DateTime();
-            $time->setTimestamp($expire);
             $expire = date('D, d-M-Y H:i:s \G\M\T', $expire - $time->getOffset());
         }
         $this->cookies[rawurlencode($name)] = rawurlencode($value)
