@@ -14,7 +14,7 @@ class api_response_exception extends api_response {
         parent::__construct($session);
     }
 
-    public function renderPlainException($e) {
+    public function renderPlainException($e = null) {
 
         if (!headers_sent()) {
             header('Content-Type: text/plain');
@@ -22,8 +22,10 @@ class api_response_exception extends api_response {
 
         if ($this->debug) {
             $this->outputException($this->data);
-            echo "\r\n\r\n".'On top of this, the view threw an exception while rendering the original exception:'."\r\n";
-            $this->outputException($e);
+            if ($e) {
+                echo "\r\n\r\n".'On top of this, the view threw an exception while rendering the original exception:'."\r\n";
+                $this->outputException($e);
+            }
         } else {
             echo 'The site is experiencing technical difficulties, apologies for the disturbance.';
         }
