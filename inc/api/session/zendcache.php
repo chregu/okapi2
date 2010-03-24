@@ -9,6 +9,22 @@
  * to store session files to any backend zend cache supports
  */
 class api_session_zendcache extends api_session_php {
+
+    /**
+     * zend cache frontend
+     *
+     * @var Zend_Cache_Core
+     */
+    protected $frontend;
+
+    /**
+     * zend cache backend
+     *
+     * @see Zend_Cache_Backend_ExtendedInterface
+     * @var Zend_Cache_Backend
+     */
+    protected $backend;
+
     public function __construct($cacheFrontend, $cacheBackend, $namespace = 'okapi') {
         $cacheFrontend->setBackend($cacheBackend);
         $this->frontend = $cacheFrontend;
