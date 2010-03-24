@@ -31,6 +31,13 @@ class api_session_php implements api_session_Idriver {
     protected $namespace;
 
     /**
+     * session id
+     *
+     * @var string
+     */
+    protected $sessId;
+
+    /**
      * @param string $namespace where in the $_SESSION var the data will be saved
      */
     public function __construct($namespace = 'okapi') {
@@ -38,9 +45,17 @@ class api_session_php implements api_session_Idriver {
             session_start();
         }
 
+        $this->sessId = session_id();
         $this->namespace = $namespace;
 
+        $this->init();
+    }
+
+    protected function init() {
         $this->request = $this->store = $this->getCurrentSession();
+        if (!is_array($this->request)) {
+            $this->request = $this->store = array('flash' => array(), 'data' => array());
+        }
 
         // clear old flash messages so they don't propagate to the next request
         // they remain readable in $this->request though
@@ -51,7 +66,7 @@ class api_session_php implements api_session_Idriver {
     }
 
     protected function getCurrentSession() {
-        return isset($_SESSION[$this->namespace]) ? $_SESSION[$this->namespace] : array('flash' => array(), 'data' => array());
+        return isset($_SESSION[$this->namespace]) ? $_SESSION[$this->namespace] : false;
     }
 
     /**
@@ -125,6 +140,17 @@ class api_session_php implements api_session_Idriver {
      * @return bool success
      */
     public function regenerateId($deleteOld = false) {
-        return session_regenerate_id($deleteOld);
+        $res = session_regenerate_id($deleteOld);
+        $this->sessId = session_id();
+        return $res;
+    }
+
+    /**
+     * returns the session id
+     *
+     * @return string
+     */
+    protected function getSessId() {
+        return $this->sessId;
     }
 }
