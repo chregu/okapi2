@@ -106,4 +106,8 @@ class api_session {
     public function commit() {
         return $this->storage->commit();
     }
+
+    public function getStorage() {
+        return $this->storage;
+    }
 }
