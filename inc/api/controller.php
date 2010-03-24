@@ -124,7 +124,9 @@ class api_controller {
             try {
                 $view = $this->sc->$viewName;
 
-                $r->command = $this->sc->response->command;
+                if (isset($this->sc->response->command)) {
+                    $r->command = $this->sc->response->command;
+                }
                 $view->setResponse($r);
                 $view->prepare();
                 $data = $r->getInputData();
