@@ -1,15 +1,15 @@
 --- 
 submodules/sfServiceContainer: 
   squashed: true
-  branch: master
   url: git://github.com/fabpot/dependency-injection.git
+  branch: master
   type: git
   revision: 07ff9ba64221c64a61f2c1fb8fe798b6e68f4970
   remote: braid/submodules/sfServiceContainer
 submodules/sfEvent: 
   squashed: true
-  branch: master
   url: git://github.com/fabpot/event-dispatcher.git
+  branch: master
   type: git
   revision: 782a5efd9a5b5956d90cb8c90370706ecb56221b
   remote: braid/submodules/sfEvent
@@ -18,5 +18,5 @@ submodules/sfYaml:
   url: git://github.com/fabpot/yaml.git
   branch: master
   type: git
-  revision: f5b7c92ec4a58c2a76f6bbd35050b6d79a8f4b6f
+  revision: 9e767c91651817d8973e66d5db6e6cc65e7eb90b
   remote: braid/submodules/sfYaml
