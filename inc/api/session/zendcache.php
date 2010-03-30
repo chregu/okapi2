@@ -8,7 +8,7 @@
  * extended session driver that uses a zend cache frontend and backend
  * to store session files to any backend zend cache supports
  */
-class api_session_zendcache extends api_session_php {
+class api_session_zendcache extends api_session_nophp {
 
     /**
      * zend cache frontend
@@ -20,26 +20,24 @@ class api_session_zendcache extends api_session_php {
     /**
      * zend cache backend
      *
-     * @see Zend_Cache_Backend_ExtendedInterface
      * @var Zend_Cache_Backend
+     * @see Zend_Cache_Backend_ExtendedInterface
      */
     protected $backend;
 
-    public function __construct($cacheFrontend, $cacheBackend, $namespace = 'okapi') {
+    public function __construct($namespace, $response, $request, $cacheBackend, $cacheFrontend) {
         $cacheFrontend->setBackend($cacheBackend);
         $this->frontend = $cacheFrontend;
-        $this->backend = $cacheBackend;
 
-        parent::__construct($namespace);
+        parent::__construct($namespace, $response, $request, $cacheBackend);
     }
 
     protected function getCurrentSession() {
         $data = $this->frontend->load($this->getSessId());
+        if (empty($data)) {
+            return false;
+        }
         return unserialize($data);
-    }
-
-    protected function getSessId() {
-        return $this->namespace.$this->sessId;
     }
 
     /**
