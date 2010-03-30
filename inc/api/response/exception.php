@@ -9,9 +9,9 @@ class api_response_exception extends api_response {
 
     protected $debug;
 
-    public function __construct($session, $debug = false) {
+    public function __construct($debug = false) {
         $this->debug = $debug;
-        parent::__construct($session);
+        parent::__construct();
     }
 
     public function renderPlainException($e = null) {
@@ -30,7 +30,6 @@ class api_response_exception extends api_response {
             echo 'The site is experiencing technical difficulties, apologies for the disturbance.';
         }
 
-        $this->session->commit();
         die;
     }
 

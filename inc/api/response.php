@@ -37,12 +37,15 @@ class api_response {
     /**
      * Constructor. Turns on output buffering.
      */
-    public function __construct($session, $buffer = null) {
-        $this->session = $session;
+    public function __construct($buffer = null) {
         $this->buffer = is_null($buffer) ? PHP_SAPI !== 'cli' : $buffer;
         if ($this->buffer) {
             ob_start();
         }
+    }
+
+    public function setSession($session) {
+        $this->session = $session;
     }
 
     /**
@@ -177,7 +180,9 @@ class api_response {
         $this->setHeader('Location', $to);
         $this->send();
 
-        $this->session->commit();
+        if ($this->session) {
+            $this->session->commit();
+        }
         die;
     }
 
@@ -207,7 +212,9 @@ class api_response {
             print $this->content;
         }
 
-        $this->session->commit();
+        if ($this->session) {
+            $this->session->commit();
+        }
 
         if ($this->setContentLengthOutput) {
             die;
