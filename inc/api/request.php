@@ -3,8 +3,6 @@
  * See the LICENSE and NOTICE file for further information
  */
 
-require('api/params.php');
-
 /**
  * Parses the request and stores all information it can extract from
  * the request in a easily accessible form.
