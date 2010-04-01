@@ -23,7 +23,7 @@ abstract class api_session_nophp extends api_session_abstract {
     }
 
      protected function generateId() {
-        $sessId = md5(uniqid(null, true).mt_rand());
+        $sessId = api_helpers_hash::generate(32);
         $this->response->setCookie('PHPSESSID', $sessId);
         return $sessId;
     }
