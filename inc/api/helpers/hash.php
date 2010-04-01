@@ -29,6 +29,15 @@ class api_helpers_hash {
     /**
      * does a fast low quality checksum of given data
      *
+     * ! Security Warning !
+     * This function is not using cryptographic hash algorithms by default
+     * It should only be used to do checksum on files, URLs or stuff that does
+     * require safety and can accept relatively high collision rates
+     *
+     * If you don't know what you're doing or why you want to use this,
+     * use the hash function above instead
+     * ! Security Warning !
+     *
      * default length using fnv132 or md4 is 32 chars
      */
     public static function checksum($data, $maxLength = null, $algo = 'fnv132') {
