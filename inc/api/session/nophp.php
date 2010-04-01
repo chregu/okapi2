@@ -24,7 +24,7 @@ abstract class api_session_nophp extends api_session_abstract {
 
      protected function generateId() {
         $sessId = api_helpers_hash::generate(32);
-        $this->response->setCookie('PHPSESSID', $sessId);
+        $this->response->setCookie('PHPSESSID', $sessId, 0, API_MOUNTPATH);
         return $sessId;
     }
 
