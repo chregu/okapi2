@@ -30,6 +30,11 @@ class api_session {
     const FLASH     = 4;
 
     /**
+     * @var api_request
+     */
+    protected $request;
+
+    /**
      * @var api_session_Idriver
      */
     protected $storage;
@@ -37,23 +42,45 @@ class api_session {
     /**
      * @param api_session_Idriver $storage the storage class to use for the session
      */
-    public function __construct($storage) {
+    public function __construct($request, $storage) {
+        $this->request = $request;
+
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         $this->storage = $storage;
     }
 
     public function read($key = null) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->read($key);
     }
 
     public function readFlash($key = null) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->read($key, self::FLASH);
     }
 
     public function write($key, $value) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->write($key, $value, self::STORE | self::REQUEST);
     }
 
     public function writeRequest($key, $value) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->write($key, $value, self::REQUEST);
     }
 
@@ -68,22 +95,42 @@ class api_session {
      * @return bool success
      */
     public function writeFlash($key, $value, $type = 'notice', $nextRequest = true) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->write($key, array('type' => $type, 'value' => $value), self::FLASH | self::REQUEST | ($nextRequest ? self::STORE : 0));
     }
 
     public function delete($key) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->delete($key, self::STORE | self::REQUEST);
     }
 
     public function deleteRequest($key) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->delete($key, self::REQUEST);
     }
 
     public function deleteFlash($key) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->delete($key, self::REQUEST | self::STORE | self::FLASH);
     }
 
     public function regenerateId($deleteOld = false) {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->regenerateId($deleteOld);
     }
 
@@ -104,10 +151,18 @@ class api_session {
     }
 
     public function commit() {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage->commit();
     }
 
     public function getStorage() {
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
+
         return $this->storage;
     }
 }
