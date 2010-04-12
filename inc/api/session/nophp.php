@@ -8,9 +8,9 @@
  * base session driver that manages the session cookie without ext/session
  */
 abstract class api_session_nophp extends api_session_abstract {
-    public function __construct($namespace, $response, $request, $backend) {
+    public function __construct($namespace, $response, $request, $storage) {
         $this->request = $request;
-        $this->backend = $backend;
+        $this->storage = $storage;
 
         parent::__construct($namespace, $response);
     }
@@ -37,5 +37,9 @@ abstract class api_session_nophp extends api_session_abstract {
     public function regenerateId($deleteOld = false) {
         $this->sessId = $this->generateId();
         return true;
+    }
+
+    public function getStorage() {
+        return $this->storage;
     }
 }

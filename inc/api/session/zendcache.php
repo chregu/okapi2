@@ -5,7 +5,7 @@
  */
 
 /**
- * extended session driver that uses a zend cache frontend and backend
+ * extended session driver that uses a zend cache frontend
  * to store session files to any backend zend cache supports
  */
 class api_session_zendcache extends api_session_nophp {
@@ -15,25 +15,16 @@ class api_session_zendcache extends api_session_nophp {
      *
      * @var Zend_Cache_Core
      */
-    protected $frontend;
+    protected $storage;
 
-    /**
-     * zend cache backend
-     *
-     * @var Zend_Cache_Backend
-     * @see Zend_Cache_Backend_ExtendedInterface
-     */
-    protected $backend;
+    public function __construct($namespace, $response, $request, $storage) {
+        $this->storage = $storage;
 
-    public function __construct($namespace, $response, $request, $cacheBackend, $cacheFrontend) {
-        $cacheFrontend->setBackend($cacheBackend);
-        $this->frontend = $cacheFrontend;
-
-        parent::__construct($namespace, $response, $request, $cacheBackend);
+        parent::__construct($namespace, $response, $request, $storage);
     }
 
     protected function getCurrentSession() {
-        $data = $this->frontend->load($this->getSessId());
+        $data = $this->storage->load($this->getSessId());
         if (empty($data)) {
             return false;
         }
@@ -46,7 +37,7 @@ class api_session_zendcache extends api_session_nophp {
      * @return bool success
      */
     public function commit() {
-        return $this->frontend->save(serialize($this->store), $this->getSessId());
+        return $this->storage->save(serialize($this->store), $this->getSessId());
     }
 
     /**
@@ -57,7 +48,7 @@ class api_session_zendcache extends api_session_nophp {
      */
     public function regenerateId($deleteOld = false) {
         if ($deleteOld) {
-            $this->frontend->remove($this->getSessId());
+            $this->storage->remove($this->getSessId());
         }
         return parent::regenerateId($deleteOld);
     }
