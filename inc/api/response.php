@@ -191,20 +191,22 @@ class api_response {
      * the output buffer and thus sends the content out.
      */
     public function send() {
-        if (!is_null($this->code)) {
-            $this->sendStatus($this->code);
-        }
+        if (PHP_SAPI !== 'cli' || !headers_sent()) {
+            if (!is_null($this->code)) {
+                $this->sendStatus($this->code);
+            }
 
-        foreach ($this->getHeaders() as $header => $value) {
-            header("$header: $value");
-        }
+            foreach ($this->getHeaders() as $header => $value) {
+                header("$header: $value");
+            }
 
-        foreach ($this->getCookies() as $cookie => $value) {
-            header("Set-Cookie: $cookie=$value", false);
-        }
+            foreach ($this->getCookies() as $cookie => $value) {
+                header("Set-Cookie: $cookie=$value", false);
+            }
 
-        if ($this->setContentLengthOutput && $this->buffer) {
-            header("Content-Length: " . ob_get_length() + strlen($this->content));
+            if ($this->setContentLengthOutput && $this->buffer) {
+                header("Content-Length: " . ob_get_length() + strlen($this->content));
+            }
         }
 
         $this->getContent();
