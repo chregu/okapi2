@@ -30,6 +30,13 @@ abstract class api_session_abstract implements api_session_Idriver {
     protected $namespace;
 
     /**
+     * request
+     *
+     * @var api_request
+     */
+    protected $request;
+
+    /**
      * session id
      *
      * @var string
@@ -39,10 +46,15 @@ abstract class api_session_abstract implements api_session_Idriver {
     /**
      * @param string $namespace to prevent name clashes inside the storage layer
      */
-    public function __construct($namespace, $response) {
+    public function __construct($namespace, $response, $request) {
         $this->namespace = $namespace;
         $this->response = $response;
         $this->response->setSession($this);
+        $this->request= $request;
+
+        if ($this->request->getSapi() === 'cli') {
+            return;
+        }
 
         $this->start();
         $this->init();
