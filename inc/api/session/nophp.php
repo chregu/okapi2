@@ -9,10 +9,9 @@
  */
 abstract class api_session_nophp extends api_session_abstract {
     public function __construct($namespace, $response, $request, $storage) {
-        $this->request = $request;
         $this->storage = $storage;
 
-        parent::__construct($namespace, $response);
+        parent::__construct($namespace, $response, $request);
     }
 
     protected function start() {
