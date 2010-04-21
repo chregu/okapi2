@@ -12,6 +12,8 @@ class api_request {
     protected $host = '';
     /** Subdomain of the current request's hostname. */
     protected $path = '';
+    /** Query arguments (?foo=bar) string taken from the url */
+    protected $args = '';
     /** Full URL of the current request. */
     protected $url = '';
     /** HTTP verb of the current request. */
@@ -49,7 +51,9 @@ class api_request {
         $this->cookies = $_COOKIE;
 
         $path = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+        $args = '';
         if (strpos($path, '?') !== FALSE) {
+            $args = substr($path, strpos($path, '?'));
             $path = substr($path, 0, strpos($path, '?'));
         }
 
@@ -86,6 +90,7 @@ class api_request {
             ? API_HOST.'/'.$this->lang.API_MOUNTPATH.substr($path, 1)
             : API_HOST.API_MOUNTPATH.substr($path, 1);
         $this->path = api_helpers_string::removeDoubleSlashes($path);
+        $this->args = $args;
 
         // Path
         $this->filename = $this->parseFilename($this->path);
@@ -138,6 +143,13 @@ class api_request {
      */
     public function getPath() {
         return $this->path;
+    }
+
+    /**
+     * Returns the query args of the current request
+     */
+    public function getQueryArgs() {
+        return $this->args;
     }
 
     /**
