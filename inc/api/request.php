@@ -42,7 +42,7 @@ class api_request {
      * Constructor. Parses the request and fills in all the
      * values it can.
      */
-    public function __construct($lang = null, $extensions = null) {
+    public function __construct($params, $lang = null, $extensions = null) {
         $this->host = API_HOST;
         $this->outputLangs = empty($lang['languages']) ? array('en') : $lang['languages'];
         $this->defaultLang = empty($lang['default']) ? reset($this->outputLangs) : $lang['default'];
@@ -73,7 +73,7 @@ class api_request {
         // HTTP verb - assume GET as default
         $this->verb = isset($_SERVER['REQUEST_METHOD']) ? strtoupper($_SERVER['REQUEST_METHOD']) : 'GET';
 
-        $this->params = new api_params();
+        $this->params = $params;
         $this->params->setGet($_GET);
         if ($this->verb == 'POST') {
             $this->params->setPost($_POST);
