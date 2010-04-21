@@ -75,12 +75,17 @@ class api_routing extends sfPatternRouting {
      * @param array $params route parameters to build the url
      * @param bool $absolute true to get a full url with the domain name etc
      */
-    public function gen($name, $params = array(), $absolute = false) {
+    public function gen($name, $params = array(), $absolute = null) {
         if ($name === null) {
-            if ($absolute) {
-                return API_HOST.API_MOUNTPATH.$this->request->getLang().$this->request->getPath();
+            $url = API_MOUNTPATH.$this->request->getLang().$this->request->getPath().$this->request->getQueryArgs();
+            if ($params) {
+                $params = http_build_query($params);
+                $url .= strpos($url, '?') ? '&'.$params : '?'.$params;
             }
-            return API_MOUNTPATH.$this->request->getLang().$this->request->getPath();
+            if ($absolute) {
+                return API_HOST.$url;
+            }
+            return $url;
         }
         $url = $this->generate($name, $params);
 
@@ -88,7 +93,9 @@ class api_routing extends sfPatternRouting {
         if ($this->routes[$name]['ssl'] && substr(API_HOST, 0, 5) !== 'https') {
             return str_replace('http://', 'https://', API_HOST).API_MOUNTPATH.$this->request->getLang().$url;
         }
-        if ($this->forceUnsecure && !$this->routes[$name]['ssl'] && substr(API_HOST, 0, 5) === 'https') {
+        // force http links for non-ssl routes if forceUnsecure is enabled
+        // you can disable this for POST urls by explicitly passing absolute as false
+        if ($this->forceUnsecure && $absolute !== false && !$this->routes[$name]['ssl'] && substr(API_HOST, 0, 5) === 'https') {
             return str_replace('https://', 'http://', API_HOST).API_MOUNTPATH.$this->request->getLang().$url;
         }
 
