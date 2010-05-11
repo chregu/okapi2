@@ -176,21 +176,20 @@ class api_response {
             }
         }
 
-        // some browsers don't like SSL POST requests to be header-redirected, triggering 
-        // warnings to the user, so instead we do it with a html redirect
-        if ($_SERVER['SERVER_PORT'] == 443 && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        // some browsers don't like SSL POST requests to be header-redirected to a non-ssl URL
+        // triggering warnings to the user, so instead we do it with a html redirect
+        if ($_SERVER['SERVER_PORT'] == 443 && $_SERVER['REQUEST_METHOD'] === 'POST' && substr($to, 5) === 'http:') {
             echo '<script type="text/javascript">';
             echo 'window.location.href="'.$to.'";';
             echo '</script>';
             echo '<noscript>';
             echo '<meta http-equiv="refresh" content="0;url='.$to.'" />';
             echo '</noscript>';
-            die;
+        } else {
+            $this->setCode($status);
+            $this->setHeader('Location', $to);
+            $this->send();
         }
-
-        $this->setCode($status);
-        $this->setHeader('Location', $to);
-        $this->send();
 
         if ($this->session) {
             $this->session->commit();
