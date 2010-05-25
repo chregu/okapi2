@@ -77,10 +77,13 @@ class api_routing extends sfPatternRouting {
      */
     public function gen($name, $params = array(), $absolute = null) {
         if ($name === null) {
-            $url = API_MOUNTPATH.$this->request->getLang().$this->request->getPath().$this->request->getQueryArgs();
+            $url = API_MOUNTPATH.$this->request->getLang().$this->request->getPath();
+            parse_str(ltrim($this->request->getQueryArgs(), '?'), $curParams);
             if ($params) {
-                $params = http_build_query($params);
-                $url .= strpos($url, '?') ? '&'.$params : '?'.$params;
+                $curParams = array_merge($curParams, $params);
+            }
+            if ($curParams) {
+                $url = rtrim($url, '?') . '?' . http_build_query($params);
             }
             if ($absolute) {
                 return API_HOST.$url;
