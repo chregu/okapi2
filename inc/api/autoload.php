@@ -43,11 +43,12 @@ class autoload {
     public static function load($class) {
         $inc_file = str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
 
-        /*
-        * Well, we could prevent a fatal error with checking if the file exists..
-        * This would result in a nice fatal error exception page.. do we want this?
-        */
-        if (@fopen($inc_file, 'r', true)) {
+        if (function_exists('stream_resolve_include_path')) {
+            if ($file = stream_resolve_include_path($inc_file)) {
+                include $file;
+                return $inc_file;
+            }
+        } elseif (@fopen($inc_file, 'r', true)) {
             include($inc_file);
             return $inc_file;
         }
