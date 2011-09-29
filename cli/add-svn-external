@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 path=$1
 repourl=$2
 svn propset svn:externals "$1 $2" .externals/svn
 svn commit -m "added an external ($1 --> $2)" .externals/svn
 svn update .externals/svn
-ln -s "../.externals/svn/$1" $1
+sc=`echo "$path" | sed 's#/*$##' | awk -F"/" '{print NF-1}'`
+sqsc=`seq $sc`
+prefix=`for i in $sqsc; do echo -n "../";done`
+ln -s $prefix.externals/svn/$1 $1
