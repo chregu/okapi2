@@ -73,7 +73,7 @@ class api_request {
         // HTTP verb - assume GET as default
         $this->verb = isset($_SERVER['REQUEST_METHOD']) ? strtoupper($_SERVER['REQUEST_METHOD']) : 'GET';
 
-        $this->params = $params;
+        $this->params = new api_params($params);
         $this->params->setGet($_GET);
         if ($this->verb == 'POST') {
             $this->params->setPost($_POST);

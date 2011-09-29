@@ -34,7 +34,7 @@ services:
     arguments: [@api_views_default]
     shared:   true
   i18n:
-    class:    api_i18n_dispatcher
+    class:    api_i18n
     arguments:
         lang:
             dir: "lang"

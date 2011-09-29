@@ -1,5 +1,5 @@
 default: &default
-    configCache: true
+    configCache: false
 
 #    autoload: myautoload.php
 
