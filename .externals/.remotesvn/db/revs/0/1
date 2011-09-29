@@ -1,0 +1,22 @@
+PLAIN
+K 13
+svn:externals
+V 67
+sfRouting	http://svn.symfony-project.com/branches/1.4/lib/routing
+
+
+END
+ENDREP
+id: 0.0.r1/109
+type: dir
+pred: 0.0.r0/17
+count: 1
+text: 0 0 4 4 2d2977d1c96f487abe4a1e202dd03b4e
+props: 1 0 96 0 515116802001c77195fc14bb3e4cd96d
+cpath: /
+copyroot: 0 /
+
+0.0.t0-0 modify-dir false true /
+
+
+109 279

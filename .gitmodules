@@ -1,0 +1,9 @@
+[submodule ".externals/sfYaml"]
+	path = .externals/sfYaml
+	url = https://github.com/fabpot/yaml.git
+[submodule ".externals/sfEventDispatcher"]
+	path = .externals/sfEventDispatcher
+	url = https://github.com/fabpot/event-dispatcher.git
+[submodule ".externals/sfServiceContainer"]
+	path = .externals/sfServiceContainer
+	url = https://github.com/fabpot/dependency-injection.git
