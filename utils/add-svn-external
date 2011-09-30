@@ -13,4 +13,4 @@ svn update .externals/svn
 sc=`echo "$epath" | sed 's#/*$##' | awk -F"/" '{print NF-1}'`
 sqsc=`seq $sc`
 prefix=`for i in $sqsc; do echo -n "../";done`
-ln -s $prefix.externals/svn/epath epath
+ln -s $prefix.externals/svn/$epath $epath
