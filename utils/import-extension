@@ -6,4 +6,4 @@ else
   echo "Create ext/ directory"
   mkdir ./ext
 fi
-./utils/add-svn-external ./ext/$1 https://svn.liip.ch/repos/public/okapi2/ext/$1/trunk/inc/
+./utils/add-svn-external ext/$1 https://svn.liip.ch/repos/public/okapi2/ext/$1/trunk/inc/

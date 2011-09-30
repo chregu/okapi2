@@ -1,10 +1,16 @@
 #!/bin/bash
-path=$1
+basedir=$(dirname $0)
+projroot=`cd $basedir;cd ..;pwd`
+cd $projroot
+epath=$1
 repourl=$2
+oldrepoUrl=`cd ./.externals/svn;svn info | grep URL | cut -d' ' -f2`
+newrepoUrl="file:///$projroot/.externals/.remotesvn"
+svn switch --relocate $oldrepoUrl $newrepoUrl .externals/svn
 svn propset svn:externals "$1 $2" .externals/svn
 svn commit -m "added an external ($1 --> $2)" .externals/svn
 svn update .externals/svn
-sc=`echo "$path" | sed 's#/*$##' | awk -F"/" '{print NF-1}'`
+sc=`echo "$epath" | sed 's#/*$##' | awk -F"/" '{print NF-1}'`
 sqsc=`seq $sc`
 prefix=`for i in $sqsc; do echo -n "../";done`
-ln -s $prefix.externals/svn/$1 $1
+ln -s $prefix.externals/svn/epath epath
