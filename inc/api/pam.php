@@ -53,7 +53,7 @@ class api_pam {
      * api_pam: Instance returned by getInstance()
      * @var api_pam
      */
-    protected static $instance;
+    protected static $_instance;
 
     /**
      * auth instance
@@ -95,6 +95,9 @@ class api_pam {
         $this->auth = $auth;
         $this->perm = $perm;
         $this->dispatcher = $dispatcher;
+        if ( ! isset(self::$_instance)) {
+            self::$_instance = $this;
+        }
     }
 
     /**
@@ -366,5 +369,13 @@ class api_pam {
      */
     protected function getAuthObj() {
         return $this->auth;
+    }
+    
+    public static function getInstance()
+    {
+//        if ( ! isset(self::$_instance)) {
+//            self::$_instance = new self();
+//        }
+        return self::$_instance;
     }
 }

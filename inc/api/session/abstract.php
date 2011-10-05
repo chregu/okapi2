@@ -8,6 +8,14 @@
  * abstract base session driver that is storage layer agnostic
  */
 abstract class api_session_abstract implements api_session_Idriver {
+    
+    /**
+     * 
+     * @var api_session_abstract
+     */
+    protected static $_instance;
+
+
     /**
      * current request data
      *
@@ -58,6 +66,7 @@ abstract class api_session_abstract implements api_session_Idriver {
 
         $this->start();
         $this->init();
+        self::$_instance = $this;
     }
 
     abstract protected function start();
@@ -139,5 +148,9 @@ abstract class api_session_abstract implements api_session_Idriver {
      */
     protected function getSessId() {
         return $this->namespace.$this->sessId;
+    }
+    
+    public static function getInstance() {
+        return self::$_instance;            
     }
 }
