@@ -56,6 +56,10 @@ class api_controller {
         $this->events = $events;
     }
 
+    /**
+     *
+     * @return api_response
+     */
     public function run() {
         // load the routes
         $this->sc->routingcontainer;

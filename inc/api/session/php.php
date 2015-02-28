@@ -28,6 +28,12 @@ class api_session_php extends api_session_abstract {
         $this->sessId = session_id();
         return $res;
     }
+    
+    public function write($key, $value, $mode = 0) {
+        parent::write($key, $value, 1);
+        $this->$key = $value;
+        $this->commit();
+    }
 
     protected function getCurrentSession() {
         return isset($_SESSION[$this->namespace]) ? $_SESSION[$this->namespace] : false;
@@ -42,4 +48,6 @@ class api_session_php extends api_session_abstract {
         $_SESSION[$this->namespace] = $this->store;
         return true;
     }
+    
+    
 }

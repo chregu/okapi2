@@ -100,7 +100,7 @@ class api_views_default extends api_views_common {
         }
     }
 
-    public function dispatchException() {
+    public function dispatchException($data) {
         // TODO implement
         throw new Exception('Implement');
     }
